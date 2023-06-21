@@ -1,3 +1,3 @@
 # MovieMeow
 
-simple bot about Cinema with transltor 
+simple bot about Cinema 
