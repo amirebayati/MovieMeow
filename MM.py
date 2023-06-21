@@ -27,7 +27,7 @@ def best_movies(message):
     try:
         movie_response = requests.get(movie_url).json()
     except requests.exceptions.RequestException as e:
-        error_message = f"Sorry, there was an error retrieving the data: {str(e)}"
+        error_message = f"Sorry, there was an error: {str(e)}"
         bot.reply_to(message, error_message)
         print(error_message)
         return
@@ -51,11 +51,11 @@ def best_series(message):
 @bot.message_handler(func=lambda message: True)
 def find_movie_or_series(message):
     search_query = message.text + "."
-    search_url = f"https://api.themoviedb.org/3/search/multi?api_key={TMDB_API_KEY}&query={search_query}"
+    search_url = f"https://api&query={search_query}"
     response = requests.get(search_url).json()
 
     if response["total_results"] == 0:
-        bot.reply_to(message, "Sorry, no results found.")
+        bot.reply_to(message, "Sorry, no results found ")
     else:
         result = response["results"][0]
 
@@ -78,7 +78,7 @@ def find_movie_or_series(message):
             release_date = movie_response["release_date"]
             runtime = movie_response["runtime"]
             poster_path = movie_response["poster_path"]
-            poster_url = f"https://image.tmdb.org/t/p/original{poster_path}"
+            poster_url = f"api{poster_path}"
 
 
             translator = GoogleTranslator(source='auto', target='fa')
@@ -112,11 +112,11 @@ def find_movie_or_series(message):
                 bot.reply_to(message, response_text, parse_mode="Markdown")
         elif result["media_type"] == "tv":
             series_id = result["id"]
-            series_url = f"https://api.themoviedb.org/3/tv/{series_id}?api_key={TMDB_API_KEY}&append_to_response=credits"
+            series_url = f"https://api{series_id}?api_key={api}&append_to_response=credits"
             series_response = requests.get(series_url).json()
 
            
-            similar_url = f"https://api.themoviedb.org/3/tv/{series_id}/similar?api_key={TMDB_API_KEY}"
+            similar_url = f"api{series_id}/similar?api_key={api}"
             similar_response = requests.get(similar_url).json()
 
             name = series_response["name"]
@@ -129,7 +129,7 @@ def find_movie_or_series(message):
             poster_path = series_response["poster_path"]
             poster_url = f"https://image.tmdb.org/t/p/original{poster_path}"
 
-            # Translate TV series information to Persian
+           
             translator = GoogleTranslator(source='auto', target='fa')
             name_fa = translator.translate(name)
             overview_fa = translator.translate(overview)
@@ -141,7 +141,6 @@ def find_movie_or_series(message):
             first_air_date_fa = translator.translate(first_air_date)
             episode_run_time_fa = translator.translate(f"{episode_run_time} minutes")
 
-        
             response_text = f"*{name_fa}*\n\n"
             response_text += f"🎞 ژانر: {', '.join(genres_fa)}\n"
             response_text += f"🎥 کارگردان: {creator_fa[0]}\n"
