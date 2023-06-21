@@ -1,31 +1,29 @@
 
-
-
 import telebot
 import requests
 from deep_translator import GoogleTranslator
 
-bot = telebot.TeleBot("6028170125:AAH5YdzPCr8XEWLDu21jUjSR1WtfEVLqWu4")
-TMDB_API_KEY = "de0df1c40169ce2f381488afe5ca7312"
+bot = telebot.TeleBot()
+api = 
 
 
 keyboard = telebot.types.ReplyKeyboardMarkup(row_width=1)
-search_button = telebot.types.KeyboardButton('جستجو 🔍')
-best_movies_button = telebot.types.KeyboardButton('برترین فیلم ها ⭐️')
-best_series_button = telebot.types.KeyboardButton('برترین سریال ها ⭐️')
+search_button = telebot.types.KeyboardButton()
+best_movies_button = telebot.types.KeyboardButton()
+best_series_button = telebot.types.KeyboardButton()
 keyboard.add(search_button, best_movies_button, best_series_button)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.reply_to(message, "سلام! خوش اومدی ❤️", reply_markup=keyboard)
+    bot.reply_to(message, , reply_markup=keyboard)
 
-@bot.message_handler(func=lambda message: message.text == 'جستجو 🔍')
+@bot.message_handler(func=lambda message: message.text == )
 def search(message):
-    bot.reply_to(message, " اسم فیلم یا سریال مورد نظرت رو بفرست:")
+    bot.reply_to(message, )
 
-@bot.message_handler(func=lambda message: message.text == 'برترین فیلم ها ⭐️')
+@bot.message_handler(func=lambda message: message.text == '')
 def best_movies(message):
-    movie_url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={TMDB_API_KEY}"
+    movie_url = f"api"
     try:
         movie_response = requests.get(movie_url).json()
     except requests.exceptions.RequestException as e:
@@ -39,9 +37,9 @@ def best_movies(message):
         response_text += f"{i+1}. {movie['title']} ({movie['release_date'][:4]})\n"
 
     bot.reply_to(message, response_text)
-@bot.message_handler(func=lambda message: message.text == 'برترین سریال ها ⭐️')
+@bot.message_handler(func=lambda message: message.text == '')
 def best_series(message):
-    series_url = f"https://api.themoviedb.org/3/tv/top_rated?api_key={TMDB_API_KEY}"
+    series_url = f"https://api"
     series_response = requests.get(series_url).json()
 
     response_text = "Here are the top 20 best rated TV series:\n\n"
@@ -63,11 +61,11 @@ def find_movie_or_series(message):
 
         if result["media_type"] == "movie":
             movie_id = result["id"]
-            movie_url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&append_to_response=credits"
+            movie_url = f"https://api"
             movie_response = requests.get(movie_url).json()
 
-            # Get similar movies
-            similar_url = f"https://api.themoviedb.org/3/movie/{movie_id}/similar?api_key={TMDB_API_KEY}"
+
+            similar_url = f"https://api"
             similar_response = requests.get(similar_url).json()
 
             title = movie_response["title"]
@@ -82,7 +80,7 @@ def find_movie_or_series(message):
             poster_path = movie_response["poster_path"]
             poster_url = f"https://image.tmdb.org/t/p/original{poster_path}"
 
-            # Translate movie information to Persian
+
             translator = GoogleTranslator(source='auto', target='fa')
             title_fa = translator.translate(title)
             overview_fa = translator.translate(overview)
@@ -94,7 +92,7 @@ def find_movie_or_series(message):
             release_date_fa = translator.translate(release_date)
             runtime_fa = translator.translate(f"{runtime} minutes")
 
-            # Send movie poster and information
+            
             response_text = f"*{title_fa}*\n\n"
             response_text += f"🎞 ژانر: {', '.join(genres_fa)}\n"
             if director_fa:
@@ -103,7 +101,7 @@ def find_movie_or_series(message):
             response_text += f"📅 تاریخ پخش: {release_date_fa}\n"
             response_text +=   f"▶️ مدت: {runtime_fa}\n\n"
             response_text += f"{overview_fa}\n\n"
-            response_text += f"میتونی از اینجا دانلود کنی: filmkio.run/movies"
+            response_text += f"میتونی از اینجا دانلود کنی: "
             bot.send_photo(message.chat.id, photo=poster_url, caption=response_text, parse_mode="Markdown")
 
             # Send similar movies
@@ -117,7 +115,7 @@ def find_movie_or_series(message):
             series_url = f"https://api.themoviedb.org/3/tv/{series_id}?api_key={TMDB_API_KEY}&append_to_response=credits"
             series_response = requests.get(series_url).json()
 
-            # Get similar TV series
+           
             similar_url = f"https://api.themoviedb.org/3/tv/{series_id}/similar?api_key={TMDB_API_KEY}"
             similar_response = requests.get(similar_url).json()
 
@@ -143,7 +141,7 @@ def find_movie_or_series(message):
             first_air_date_fa = translator.translate(first_air_date)
             episode_run_time_fa = translator.translate(f"{episode_run_time} minutes")
 
-            # Send TV series poster and information
+        
             response_text = f"*{name_fa}*\n\n"
             response_text += f"🎞 ژانر: {', '.join(genres_fa)}\n"
             response_text += f"🎥 کارگردان: {creator_fa[0]}\n"
@@ -154,7 +152,7 @@ def find_movie_or_series(message):
             response_text += f"میتونی از اینجا دانلود کنی: filmkio.run/series"
             bot.send_photo(message.chat.id, photo=poster_url, caption=response_text, parse_mode="Markdown")
 
-            # Send similar TV series
+        
             if len(similar_response["results"]) > 0:
                 response_text = f"🎬 *سریال های مشابه:*\n\n"
                 for series in similar_response["results"][:5]:
