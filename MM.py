@@ -3,8 +3,8 @@ import requests
 from deep_translator import GoogleTranslator
 from telebot import apihelper
 
-bot = telebot.TeleBot("6246085389:AAFdSTiO8bdVbOAuxrCPWax3b8dIeSQb3gY")
-TMDB_API_KEY = "de0df1c40169ce2f381488afe5ca7312"
+bot = telebot.TeleBot("")
+api_key = 
 
 
 keyboard = telebot.types.ReplyKeyboardMarkup(row_width=1)
