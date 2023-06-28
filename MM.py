@@ -34,7 +34,7 @@ def search(message):
 
 @bot.message_handler(func=lambda message: message.text == '')
 def best_movies(message):
-    movie_url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={TMDB_API_KEY}"
+    movie_url = f"api"
     try:
         movie_response = requests.get(movie_url).json()
     except requests.exceptions.RequestException as e:
@@ -50,7 +50,7 @@ def best_movies(message):
     bot.reply_to(message, response_text)
 @bot.message_handler(func=lambda message: message.text == '')
 def best_series(message):
-    series_url = f"https://api.themoviedb.org/3/tv/top_rated?api_key={TMDB_API_KEY}"
+    series_url = f"api}"
     series_response = requests.get(series_url).json()
 
     response_text = "Here are the top 20 best rated TV series:\n\n"
@@ -61,36 +61,35 @@ def best_series(message):
 
 @bot.message_handler(func=lambda message: message.text == "فیلم های محبوب امروز 💥")
 def popular_movies_handler(message):
-    # Get the popular movies
+   
     popular_movies_url = f"api"
     popular_movies_response = requests.get(popular_movies_url).json()
     popular_movies = popular_movies_response["results"]
 
-    # Build the message string
+   
     message_text = popular_movies_message
     for movie in popular_movies[:11]:
         title = movie["title"]
         release_date = movie["release_date"]
         message_text += f"- *{title}* ({release_date[:4]})\n"
 
-    # Send the message
     bot.send_message(message.chat.id, message_text, parse_mode="Markdown")
 
 @bot.message_handler(func=lambda message: message.text == "سریال های محبوب امروز 💥")
 def popular_tv_handler(message):
-    # Get the popular TV shows
+   
     popular_tv_url = f"api"
     popular_tv_response = requests.get(popular_tv_url).json()
     popular_tv = popular_tv_response["results"]
 
-    # Build the message string
+  
     message_text = popular_tv_message
     for show in popular_tv[:11]:
         name = show["name"]
         first_air_date = show["first_air_date"]
         message_text += f"- *{name}* ({first_air_date[:4]})\n"
 
-    # Send the message
+  
     bot.send_message(message.chat.id, message_text, parse_mode="Markdown")
 
 @bot.message_handler(func=lambda message: True)
